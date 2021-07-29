@@ -1,5 +1,7 @@
 package Modelo;
 
+import javax.persistence.Id;
+
 public class Universidad {
 	
 	@Id

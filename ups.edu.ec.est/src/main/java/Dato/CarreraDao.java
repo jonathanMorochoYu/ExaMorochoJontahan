@@ -2,67 +2,55 @@ package Dato;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import Modelo.Carrera;
 
+@Stateless
+
 public class CarreraDao {
 	
-	@PersistenceContext(name = "EvaluacionWSYupankiMalkiPersistenceUnit")
+	
+	@PersistenceContext
 	private EntityManager em;
-	
-	
-	public void insert(Carrera s) {
-		em.persist(s);
-	}
-	
-	
-	public void update(Carrera s) {
-		em.merge(s);
-	}
-	
-	
-	public Carrera read(int codigoTransaccion) {
-		return em.find(Titulo.class, codigoTransaccion);
-	}
-	
-	
-	
-	public void delete(int codT) {
-		Carrera c = read(codT);
-		em.remove(c);
-	}
-	
-	
-	public List<Carrera> getListaTransacciones(String cedula) throws Exception {
-		try {
-			String jpql = "SELECT s FROM Titulo s Where s.cedula.cedula =:ced";
-			Query q = em.createQuery(jpql, Carrera.class);
-			q.setParameter("ced", cedula);
-			return q.getResultList();
-		} catch (NoResultException e) {
-			// System.out.println(e.getMessage());
-			throw new Exception("No Existe La institucion");
-		}
 
+	public void insert(Carrera carrera) {
+		em.persist(carrera);
 	}
-	
-	
-	public List<Carrera> getListaTitulos(String palabra) throws Exception {
-		try {
-			String jpql = "SELECT s FROM Titulo s Where s.titulo like '%"+palabra+"%'";
-			Query q = em.createQuery(jpql, Carrera.class);
-			return q.getResultList();
-		} catch (NoResultException e) {
-			// System.out.println(e.getMessage());
-			throw new Exception("Credenciaales Inocorrectas");
-		}
-	}
-	
-	
 
+	public void update(Carrera carrera) {
+		em.merge(carrera);
+	}
+
+	public Carrera read(String codigoCA) {
+		Carrera p = em.find(Carrera.class, codigoCA);
+		return p;
+	}
+
+	public void delete(String codigoCA) {
+		Carrera p = em.find(Carrera.class, codigoCA);
+		em.remove(p);
+	}
+
+	public List<Carrera> getCarreras(String nombre){
+		
+		String jpql2="SELECT p FROM Carrera p WHERE nombre LIKE ?1";
+		
+		nombre= nombre+"%";
+		Query query= em.createQuery(jpql2, Carrera.class);
+		query.setParameter(1, nombre);
+		
+		List<Carrera> carreras=query.getResultList();
+		return carreras;
+		
+	}
 }
+
+
+
 
 

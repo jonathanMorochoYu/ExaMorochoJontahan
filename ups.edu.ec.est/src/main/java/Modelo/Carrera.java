@@ -1,9 +1,7 @@
 package Modelo;
 
 import javax.persistence.Entity;
-
-import Modelo.Column;
-import Modelo.Id;
+import javax.persistence.Id;
 
 
 @Entity
